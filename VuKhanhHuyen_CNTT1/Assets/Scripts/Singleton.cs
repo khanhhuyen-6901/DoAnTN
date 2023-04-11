@@ -1,67 +1,65 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+/// <summary>
+/// FastSingleton MonoBehaviour ---> For fasted reference purpose
+/// Update:2020-04-21 by hungtx
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
 {
-    // private static instance
-    static T m_ins;
-
-    // public static instance used to refer to Singleton (e.g. MyClass.Instance)
-    public static T Ins
+    /// <summary>
+    /// The public static reference to the instance
+    /// Call if you sure the reference is available
+    /// </summary>
+    private static T _instance;
+    private static bool _instantiated; //checking bool is faster than checking null
+    /// <summary>
+    /// This is safe reference
+    /// Call to get reference in Awake Function
+    /// </summary>
+    public static T instance
     {
         get
         {
-            // if no instance is found, find the first GameObject of type T
-            if (m_ins == null)
+            if (_instantiated)
             {
-                m_ins = GameObject.FindObjectOfType<T>();
-
-                // if no instance exists in the Scene, create a new GameObject and add the Component T 
-                if (m_ins == null)
-                {
-                    GameObject singleton = new GameObject(typeof(T).Name);
-                    m_ins = singleton.AddComponent<T>();
-                }
+                return _instance;
             }
-            // return the singleton instance
-            return m_ins;
+            _instance = (T)FindObjectOfType(typeof(T));
+            if (!_instance)
+            {
+                GameObject gameObject = new GameObject(typeof(T).ToString());
+                return gameObject.AddComponent<T>();
+            }
+            if (_instance)
+            {
+                _instantiated = true;
+            }
+            return _instance;
         }
     }
 
-    public virtual void Awake()
+    protected virtual void Awake()
     {
-        MakeSingleton(true);
-    }
-
-    public virtual void Start()
-    {
-
-    }
-
-
-    public void MakeSingleton(bool destroyOnload)
-    {
-        if (m_ins == null)
+        // Make instance in Awake to make reference performance uniformly.
+        if (!_instance)
         {
-            m_ins = this as T;
-            if (destroyOnload)
-            {
-                var root = transform.root;
-
-                if (root != transform)
-                {
-                    DontDestroyOnLoad(root);
-                }
-                else
-                {
-                    DontDestroyOnLoad(this.gameObject);
-                }
-            }
+            _instance = (T)this;
+            _instantiated = true;
         }
-        else
+        // If there is an instance already in the same scene, destroy this script.
+        else if (_instance != this)
         {
-            Destroy(gameObject);
+            Debug.LogWarning("Singleton " + typeof(T) + " is already exists.");
+            Destroy(this);
+        }
+    }
+    protected virtual void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            _instance = null;
+            _instantiated = false;
         }
     }
 }
