@@ -8440,9 +8440,10 @@ GameObject:
   - component: {fileID: 1543016497924270532}
   - component: {fileID: 8305950797934101074}
   - component: {fileID: 6379668862176346526}
+  - component: {fileID: 8514438427102673585}
   m_Layer: 6
   m_Name: PV_Character_Skeleton_B 1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8594,6 +8595,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.317436, y: 2}
   m_EdgeRadius: 0
+--- !u!114 &8514438427102673585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8568472936667114596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 230c39aedd90da543ba3b307d3cfce16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpUi: {fileID: 0}
 --- !u!1 &8734124396949315788
 GameObject:
   m_ObjectHideFlags: 0

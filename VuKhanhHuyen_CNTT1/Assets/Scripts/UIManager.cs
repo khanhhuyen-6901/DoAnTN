@@ -11,19 +11,24 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] GameObject winUI;
     [SerializeField] GameObject loseUI;
     [SerializeField] GameObject hpUI;
+    [SerializeField] GameObject hpBot;
     [SerializeField] Image damagePlayer;
     [SerializeField] Image hpPlayer;
     [SerializeField] Image hpEnemy;
+    [SerializeField] Image hpBotDragon;
     public string curentScene;
     public string nextScene;
     public Text couting;
-    public float time = 20f;
-    public float timeline = 3f;
+    public float time = 15f;
+    public float timeline = 20f;
     public float checkDam=1f;
+    public float checkBot=1f;
+    public float heath;
+    public float maxHeath;
     // Start is called before the first frame update
     void Start()
     {
-       
+        maxHeath = heath;
     }
 
 
@@ -37,9 +42,15 @@ public class UIManager : Singleton<UIManager>
     {
         hpEnemy.fillAmount = hpEnemy.fillAmount - 0.15f;
     }
+    public void ReduceHPBot()
+    {
+        hpBotDragon.fillAmount -= 0.06f;
+        checkBot= hpBotDragon.fillAmount;
+    }
     public void LoadHP()
     {
         hpEnemy.fillAmount = 1f;
+        hpBotDragon.fillAmount = 1f;
     }
     public void ReduceDamage()
     {
@@ -48,7 +59,11 @@ public class UIManager : Singleton<UIManager>
     }
     public void ReduceHPPlayer()
     {
-        hpPlayer.fillAmount -= 0.025f;
+        hpPlayer.fillAmount -= 0.05f;
+    }
+    public void ReduceHPPlayer1()
+    {
+        hpPlayer.fillAmount -= 0.06f;
     }
     public void NextLevel()
     {
@@ -75,6 +90,14 @@ public class UIManager : Singleton<UIManager>
     {
         hpUI.SetActive(true);
     }
+    public void HpBot()
+    {
+        hpBot.SetActive(true);
+    }
+    public void DieBot()
+    {
+        hpBot.SetActive(false);
+    }
     public void DieEnemy()
     {
         hpUI.SetActive(false);
@@ -88,17 +111,45 @@ public class UIManager : Singleton<UIManager>
             if(time <= 0)
             {   
                 damagePlayer.fillAmount += 0.2f;
-                time = 20f;
+                checkDam = damagePlayer.fillAmount;
+                time = 15f;
             }
         }
     }
-    public void changeAnim()
+    public void AddHpPlayer()
     {
-        timeline -= Time.deltaTime;
-        if (timeline <= 0)
+       
+
+        if (hpPlayer.fillAmount < 1f)
         {
-            timeline = 3f;
+            timeline -= Time.deltaTime;
+            if (timeline <= 0)
+            {
+                if (heath + 50f >200f)
+                {
+                    heath = maxHeath;
+                }
+                else
+                {
+                    heath += 50f;
+                }
+                hpPlayer.fillAmount += 0.25f;
+                UpdateCounting(heath + "/" + maxHeath);
+                timeline = 20f;
+            }
         }
+    }
+    public void InstructBtn()
+    {
+        winUI.SetActive(true) ;
+    }
+    public void ExitBtn()
+    {
+        winUI.SetActive(false);
+    }
+    public void lateTime() 
+    {
+        StartCoroutine(AddDamage());
     }
     IEnumerator ActivateUI(GameObject ui)
     {
@@ -107,6 +158,6 @@ public class UIManager : Singleton<UIManager>
     }
     IEnumerator AddDamage()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
     }
 }

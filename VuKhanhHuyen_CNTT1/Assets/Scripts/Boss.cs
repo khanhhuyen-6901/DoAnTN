@@ -3,26 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Boss : MonoBehaviour
 {
-    float time=3f;
+    float timeline = 8f;
     Animator m_amin;
-    int lan = 0;
-    public GameObject hpUi;  
-   
+    int boss = 0;
+    public GameObject hpUiBoss;
     bool test;
     // Start is called before the first frame update
     void Start()
     {
         m_amin = GetComponent<Animator>();
         test= true;
-        
         UIManager.instance.UpdateCounting(UIManager.instance.heath + "/" + UIManager.instance.maxHeath);
     }
 
     // Update is called once per frame
-     void Update()
+    void Update()
     {
+        
         if (UIManager.instance.heath <= 0)
         {
             test= false;
@@ -30,32 +29,37 @@ public class Enemy : MonoBehaviour
             UIManager.instance.Lose();
         }
         if (test == false) return;
-        if (lan==1)
+        if (boss == 1)
         {
-            Danh();
+            BossDanh();
+        }
+        if (UIManager.instance.checkBot == 0)
+        {
+            m_amin.SetTrigger("Die");
+            test = false;
         }
     }
-    protected void Danh()
+    protected void BossDanh()
     {
-        time -= Time.deltaTime;
-        if (time <= 0)
+        timeline -= Time.deltaTime;
+        if (timeline <= 0)
         {
             m_amin.SetTrigger("Attack");
-            UIManager.instance.ReduceHPPlayer();
-            UIManager.instance.heath -= 10f;
+            UIManager.instance.ReduceHPPlayer1();
+            UIManager.instance.heath -= 15f;
             UIManager.instance.UpdateCounting(UIManager.instance.heath + "/" + UIManager.instance.maxHeath);
-            time = 3f;
+            timeline = 8f;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (hpUi.activeInHierarchy)
+        if (hpUiBoss.activeInHierarchy)
         {
-            lan = 1;
+            boss = 1;
         }
         else
         {
-            lan= 0;
+            boss = 0;
         }
     }
 }

@@ -10,6 +10,7 @@ public class Player : Controller
     protected override void Update()
     {
         base.Update();
+        if (is_finish == false) return;
         Flip();
         //transform.position= new Vector3(Mathf.Clamp(transform.position.x,0f,37f),transform.position.y,transform.position.z);
     }
