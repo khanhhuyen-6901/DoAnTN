@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-    [SerializeField] protected float leghtPlayer;
+    [SerializeField] protected float rightPlayer;
+    [SerializeField] protected float leftPlayer;
     [SerializeField] protected float speed;
     float heathEnenmy = 100f;
     float heathBot = 250f;
@@ -12,11 +13,13 @@ public class Controller : MonoBehaviour
     Animator m_amin;
     bool is_start;
     protected bool is_finish;
+    Enemy em;
     // Start is called before the first frame update
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
         m_amin = GetComponent<Animator>();
+        em = FindObjectOfType<Enemy>();
         is_start = true;
         is_finish = true;
         UIManager.instance.UpdateCounting(UIManager.instance.heath + "/" + UIManager.instance.maxHeath);
@@ -38,7 +41,7 @@ public class Controller : MonoBehaviour
             }
             is_start= false;
         }
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A) && gameObject.transform.position.x > leftPlayer)
         {
             if (m_rb)
             {
@@ -49,7 +52,7 @@ public class Controller : MonoBehaviour
                 m_amin.SetTrigger("Run");
             }
         }
-        else if (Input.GetKey(KeyCode.D)&&gameObject.transform.position.x<leghtPlayer)
+        else if (Input.GetKey(KeyCode.D)&&gameObject.transform.position.x<rightPlayer)
         {
             if (m_rb)
             {
@@ -80,7 +83,11 @@ public class Controller : MonoBehaviour
         }
         
     }
-    
+    IEnumerator AddHPEnemy()
+    {
+        yield return new WaitForSeconds(1f);
+        heathEnenmy = 100f;
+    }
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.tag == "Wall")
@@ -100,10 +107,10 @@ public class Controller : MonoBehaviour
             UIManager.instance.ReduceHPEnemy();
             UIManager.instance.ReduceDamage();
             if (heathEnenmy <= 0)
-            {
-                Destroy(col.gameObject);
+            { 
                 UIManager.instance.DieEnemy();
-                heathEnenmy = 100f;
+                Destroy(col.gameObject,1f);
+                StartCoroutine(AddHPEnemy());
                 UIManager.instance.LoadHP();
             }
         }
@@ -117,8 +124,7 @@ public class Controller : MonoBehaviour
             {
                 is_finish = false;
                 UIManager.instance.DieBot();
-                UIManager.instance.lateTime();
-                //Destroy(col.gameObject);
+                Destroy(col.gameObject,2f);
                 heathBot = 200f;
                 UIManager.instance.LoadHP();
                 UIManager.instance.Win();

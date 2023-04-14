@@ -8440,7 +8440,7 @@ GameObject:
   - component: {fileID: 1543016497924270532}
   - component: {fileID: 8305950797934101074}
   - component: {fileID: 6379668862176346526}
-  - component: {fileID: 8514438427102673585}
+  - component: {fileID: 618236147181824738}
   m_Layer: 6
   m_Name: PV_Character_Skeleton_B 1
   m_TagString: Enemy
@@ -8595,7 +8595,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5.317436, y: 2}
   m_EdgeRadius: 0
---- !u!114 &8514438427102673585
+--- !u!114 &618236147181824738
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8608,6 +8608,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpUi: {fileID: 0}
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &8734124396949315788
 GameObject:
   m_ObjectHideFlags: 0

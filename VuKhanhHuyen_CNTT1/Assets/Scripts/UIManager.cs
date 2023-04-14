@@ -21,8 +21,10 @@ public class UIManager : Singleton<UIManager>
     public Text couting;
     public float time = 15f;
     public float timeline = 20f;
+    public float timedie = 1f;
     public float checkDam=1f;
     public float checkBot=1f;
+    public float checkEnemy=1f;
     public float heath;
     public float maxHeath;
     // Start is called before the first frame update
@@ -40,12 +42,14 @@ public class UIManager : Singleton<UIManager>
     }
     public void ReduceHPEnemy()
     {
-        hpEnemy.fillAmount = hpEnemy.fillAmount - 0.15f;
+        hpEnemy.fillAmount = hpEnemy.fillAmount - 0.15f; 
+        checkEnemy=hpEnemy.fillAmount;
     }
     public void ReduceHPBot()
     {
         hpBotDragon.fillAmount -= 0.06f;
         checkBot= hpBotDragon.fillAmount;
+        checkEnemy = 1f;
     }
     public void LoadHP()
     {
@@ -147,10 +151,7 @@ public class UIManager : Singleton<UIManager>
     {
         winUI.SetActive(false);
     }
-    public void lateTime() 
-    {
-        StartCoroutine(AddDamage());
-    }
+   
     IEnumerator ActivateUI(GameObject ui)
     {
         yield return new WaitForSeconds(3f);

@@ -8,21 +8,36 @@ public class Enemy : MonoBehaviour
     float time=3f;
     Animator m_amin;
     int lan = 0;
-    public GameObject hpUi;  
-   
+    public GameObject hpUi;
+    RaycastHit hit1;
     bool test;
+    [SerializeField] LayerMask wallLayer;
+    Controller ctl;
     // Start is called before the first frame update
     void Start()
     {
         m_amin = GetComponent<Animator>();
         test= true;
-        
+        ctl=FindObjectOfType<Controller>();
         UIManager.instance.UpdateCounting(UIManager.instance.heath + "/" + UIManager.instance.maxHeath);
     }
 
     // Update is called once per frame
      void Update()
     {
+        
+
+        if (Physics.Raycast(transform.position, Vector3.left, out hit1, Mathf.Infinity, wallLayer))
+        {
+            Debug.Log(hit1);
+            if (Mathf.Abs(hit1.collider.transform.position.x - transform.position.x) <= 1f)
+            {
+                Debug.Log("thay");
+            }
+
+        }
+
+        
         if (UIManager.instance.heath <= 0)
         {
             test= false;
@@ -34,7 +49,10 @@ public class Enemy : MonoBehaviour
         {
             Danh();
         }
+       
+        
     }
+    
     protected void Danh()
     {
         time -= Time.deltaTime;
@@ -57,5 +75,6 @@ public class Enemy : MonoBehaviour
         {
             lan= 0;
         }
+        
     }
 }
