@@ -10,11 +10,10 @@ public class UIManager : Singleton<UIManager>
 
     [SerializeField] GameObject winUI;
     [SerializeField] GameObject loseUI;
-    [SerializeField] GameObject hpUI;
     [SerializeField] GameObject hpBot;
     [SerializeField] Image damagePlayer;
     [SerializeField] Image hpPlayer;
-    [SerializeField] Image hpEnemy;
+    
     [SerializeField] Image hpBotDragon;
     public string curentScene;
     public string nextScene;
@@ -40,20 +39,16 @@ public class UIManager : Singleton<UIManager>
 
         SceneManager.LoadScene(curentScene);
     }
-    public void ReduceHPEnemy()
-    {
-        hpEnemy.fillAmount = hpEnemy.fillAmount - 0.15f; 
-        checkEnemy=hpEnemy.fillAmount;
-    }
+   
     public void ReduceHPBot()
     {
         hpBotDragon.fillAmount -= 0.06f;
         checkBot= hpBotDragon.fillAmount;
-        checkEnemy = 1f;
+        
     }
     public void LoadHP()
     {
-        hpEnemy.fillAmount = 1f;
+       
         hpBotDragon.fillAmount = 1f;
     }
     public void ReduceDamage()
@@ -90,10 +85,7 @@ public class UIManager : Singleton<UIManager>
     {    
         StartCoroutine(ActivateUI(loseUI));
     }
-    public void HpEnemy()
-    {
-        hpUI.SetActive(true);
-    }
+    
     public void HpBot()
     {
         hpBot.SetActive(true);
@@ -102,10 +94,7 @@ public class UIManager : Singleton<UIManager>
     {
         hpBot.SetActive(false);
     }
-    public void DieEnemy()
-    {
-        hpUI.SetActive(false);
-    }
+   
     public void AddDamPlayer()
     {
 
@@ -157,8 +146,5 @@ public class UIManager : Singleton<UIManager>
         yield return new WaitForSeconds(3f);
         ui.SetActive(true);
     }
-    IEnumerator AddDamage()
-    {
-        yield return new WaitForSeconds(1f);
-    }
+    
 }

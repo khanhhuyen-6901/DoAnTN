@@ -1709,14 +1709,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winUI: {fileID: 1431905886}
   loseUI: {fileID: 0}
-  hpUI: {fileID: 0}
   hpBot: {fileID: 0}
   damagePlayer: {fileID: 0}
   hpPlayer: {fileID: 0}
-  hpEnemy: {fileID: 0}
   hpBotDragon: {fileID: 0}
   curentScene: 
-  nextScene: Level1
+  nextScene: Level3
   couting: {fileID: 0}
   time: 20
   timeline: 3

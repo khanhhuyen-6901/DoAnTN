@@ -13,13 +13,14 @@ public class Controller : MonoBehaviour
     Animator m_amin;
     bool is_start;
     protected bool is_finish;
-    Enemy em;
+    
+    public float attackRate = 2f;
+    float nextAttackTime = 0f;
     // Start is called before the first frame update
     void Start()
     {
         m_rb = GetComponent<Rigidbody2D>();
         m_amin = GetComponent<Animator>();
-        em = FindObjectOfType<Enemy>();
         is_start = true;
         is_finish = true;
         UIManager.instance.UpdateCounting(UIManager.instance.heath + "/" + UIManager.instance.maxHeath);
@@ -28,6 +29,7 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        UIManager.instance.timedie = 1f;
         if (is_finish == false) return;
         UIManager.instance.AddDamPlayer();
         UIManager.instance.AddHpPlayer();
@@ -40,6 +42,15 @@ public class Controller : MonoBehaviour
                 m_amin.SetTrigger("Die");
             }
             is_finish= false;
+        }
+        
+        if (Time.time >= nextAttackTime)
+        {
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                m_amin.SetTrigger("Attack");
+                nextAttackTime= Time.time+1f/attackRate;
+            }
         }
         if (Input.GetKey(KeyCode.A) && gameObject.transform.position.x > leftPlayer)
         {
@@ -63,14 +74,14 @@ public class Controller : MonoBehaviour
                 m_amin.SetTrigger("Run");
             }
         }
-        else if (Input.GetKey(KeyCode.S))
+        /*else if (Input.GetKey(KeyCode.S))
         {
             if (m_amin)
             {
                 m_amin.SetTrigger("Attack");
             }
             
-        }
+        }*/
         else
         {
             if (m_rb)
@@ -87,11 +98,7 @@ public class Controller : MonoBehaviour
   
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.tag == "Wall")
-        {
-            UIManager.instance.HpEnemy();
-            Destroy(col.gameObject);
-        }
+        
         if (col.tag == "Finish")
         {
             UIManager.instance.HpBot();
@@ -100,16 +107,11 @@ public class Controller : MonoBehaviour
         if (col.tag=="Enemy")
         {
             Debug.Log("cham");
-            heathEnenmy = heathEnenmy - 15f;
-            UIManager.instance.ReduceHPEnemy();
+            //heathEnenmy = heathEnenmy - 15f;
+            UIManager.instance.timedie = 2;
+            //UIManager.instance.ReduceHPEnemy();
             UIManager.instance.ReduceDamage();
-            if (heathEnenmy <= 0)
-            { 
-                UIManager.instance.DieEnemy();
-                Destroy(col.gameObject);
-                heathEnenmy = 100f;
-                UIManager.instance.LoadHP();
-            }
+            
         }
         if (col.tag == "Bot")
         {
