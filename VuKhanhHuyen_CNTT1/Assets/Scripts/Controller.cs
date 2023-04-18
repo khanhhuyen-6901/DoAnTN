@@ -39,7 +39,7 @@ public class Controller : MonoBehaviour
             {
                 m_amin.SetTrigger("Die");
             }
-            is_start= false;
+            is_finish= false;
         }
         if (Input.GetKey(KeyCode.A) && gameObject.transform.position.x > leftPlayer)
         {
@@ -69,6 +69,7 @@ public class Controller : MonoBehaviour
             {
                 m_amin.SetTrigger("Attack");
             }
+            
         }
         else
         {
@@ -83,11 +84,7 @@ public class Controller : MonoBehaviour
         }
         
     }
-    IEnumerator AddHPEnemy()
-    {
-        yield return new WaitForSeconds(1f);
-        heathEnenmy = 100f;
-    }
+  
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.tag == "Wall")
@@ -109,8 +106,8 @@ public class Controller : MonoBehaviour
             if (heathEnenmy <= 0)
             { 
                 UIManager.instance.DieEnemy();
-                Destroy(col.gameObject,1f);
-                StartCoroutine(AddHPEnemy());
+                Destroy(col.gameObject);
+                heathEnenmy = 100f;
                 UIManager.instance.LoadHP();
             }
         }

@@ -25,19 +25,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
      void Update()
     {
-        
-
-        if (Physics.Raycast(transform.position, Vector3.left, out hit1, Mathf.Infinity, wallLayer))
-        {
-            Debug.Log(hit1);
-            if (Mathf.Abs(hit1.collider.transform.position.x - transform.position.x) <= 1f)
-            {
-                Debug.Log("thay");
-            }
-
-        }
-
-        
+  
         if (UIManager.instance.heath <= 0)
         {
             test= false;
